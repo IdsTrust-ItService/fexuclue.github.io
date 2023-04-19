@@ -1,0 +1,215 @@
+@import 'vars';
+@import 'functions';
+@import 'breakpoints';
+
+// ==== 기본 MIXIN ====
+
+// float하는 상위 DOM에 선언
+@mixin clearfix {
+  &:after {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 0;
+	clear: both;
+  }
+}
+
+// 한줄 말줄임표
+@mixin ellipsis($autoWidth: true, $isInline: true, $clearLineHeight: true) {
+  @if ($isInline) {
+	display: inline-block;
+  }
+  @if ($autoWidth) {
+	width: 100%;
+  }
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if ($clearLineHeight) {
+	line-height: normal;
+  }
+
+  // 멀티 라인 값 클리어
+  @include clear_multi_ellipsis;
+}
+
+// n줄 말줄임표
+@mixin multi_ellipsis($line-height, $lines: 2, $useHeight: true) {
+  overflow: hidden;
+  @if $useHeight {
+	height: $line-height * $lines;
+  }
+  max-height: $line-height * $lines;
+  line-height: $line-height;
+
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+
+  text-overflow: -o-ellipsis-lastline;
+
+  white-space: normal;
+}
+
+@mixin clear_multi_ellipsis {
+  height: auto;
+  max-height: none;
+  -webkit-box-orient: inherit;
+  -webkit-line-clamp: inherit;
+}
+
+// Display Flex를 활용한 영역대비 사이즈 자동 조절
+@mixin justify_width($type: between, $isInline: false, $isReverse: false) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  @if ($isInline) {
+	display: -ms-inline-flexbox;
+	display: -webkit-inline-box;
+	display: inline-flex;
+	display: -webkit-inline-flex;
+  } @else {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	display: -webkit-flex;
+  }
+  @if ($type == between) {
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+  align-items:center;
+  } @else if ($type == space-around) {
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	-webkit-justify-content: space-around;
+  align-items:center;
+  } @else if ($type == center) {
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-justify-content: center;
+  align-items:center;
+  } @else if ($type == start) {
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+  align-items:center;
+  } @else if ($type == end) {
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+  align-items:center;
+  }
+
+  @if $isReverse {
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: reverse;
+	-ms-flex-direction: row-reverse;
+	flex-direction: row-reverse;
+  }
+}
+
+@mixin calc_letter_spacing($psValue, $fontSize: 1rem) {
+  $isPX: is_absolute_length($fontSize);
+  @if ($fontSize != 1rem) {
+	font-size: $fontSize;
+  }
+  @if $isPX {
+	letter-spacing: ($psValue * $fontSize / 1000);
+  } @else {
+	letter-spacing: ($psValue * convertRemToPx($fontSize) / 1000);
+  }
+}
+
+@mixin set_placeholder_color($color: rgba(255, 255, 255, .65)) {
+  &::-webkit-input-placeholder {
+	color: $color;
+  }
+
+  &:-ms-input-placeholder {
+	color: $color;
+  }
+
+  &::-ms-input-placeholder {
+	color: $color;
+  }
+
+  &::placeholder {
+	color: $color;
+  }
+
+  &:-ms-input-placeholder {
+	color: $color;
+  }
+
+  &::-ms-input-placeholder { /* Microsoft Edge */
+	color: $color;
+  }
+}
+
+@mixin hidden {
+ /* width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;*/
+
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px !important;
+	height: 1px !important;
+	border: 0;
+	outline: 0;
+	background: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+}
+
+@mixin no_select_text {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// ==== 프로젝트 MIXIN ====
+@mixin text_main_title {
+  font-weight: 900;
+	line-height:$fontSize18;
+	@include calc_letter_spacing(-50, $fontSize18);
+}
+
+@mixin text_title1 {
+	font-weight: 700;
+	color:$colorBlack;
+	line-height:1.35;
+	@include calc_letter_spacing(-25, $fontSizeH4);
+	//word-break: break-all;
+}
+@mixin text_title2{
+	font-weight: 700;
+	color:$colorBlack;
+	line-height:1.35;
+	@include calc_letter_spacing(-25, $fontSize16);
+	//word-break: break-all;
+}
+
+@mixin pos_center{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%, -50%);
+}
+@mixin pos_centerY{
+	position:absolute;
+	top:50%;
+	transform:translatey(-50%);
+}

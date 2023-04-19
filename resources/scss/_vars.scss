@@ -1,0 +1,56 @@
+// 폰트
+$fontKor: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+
+$defaultFontSize: 16px;
+
+$fontSizeH1: 32px;
+$fontSizeH2: 28px;
+$fontSizeH3: 24px;
+$fontSizeH4: 21px;
+
+$fontSize19: 19px;
+$fontSize18: 18px;
+$fontSize17: 17px;
+$fontSize16: 16px;
+$fontSize15: 15px;
+$fontSize14: 14px;
+$fontSize13: 13px;
+$fontSize12: 12px;
+$fontSize11: 11px;
+$fontSize10: 10px;
+$fontSize9: 9px;
+
+// 레이아웃 사이즈
+$headerHeight: 45px;
+$contTitleHeight: 45px;
+$contentsWidth: 1200px;
+
+// 컬러
+$defaultTextColor: #1F1F1F;
+$colorBlack: #1F1F1F;
+$colorGray:#666;
+$colorWhite : #fff;
+
+$colorGray:#666;
+$colorLightGray:#F9FAFB;
+$colorMediumGray:#A0A0A0;
+$colorDarkGray:#8f969c;
+
+
+// 트렌지션
+$transDefaultTime: 200ms;
+$transDefaultEase: ease;
+$transEaseBounceBack: cubic-bezier(.17, .67, .29, 1.32);
+
+$imgUrlPrefix: '../images/';
+
+
+// 분기점
+$grid-breakpoints: (
+		xs: 0,
+		sm: 576px,
+		md: 768px,
+		lg: 1024px,
+		xl: 1280px,
+		xxl: 1600px
+);

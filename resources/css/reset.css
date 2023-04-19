@@ -1,0 +1,140 @@
+@charset "utf-8";
+/*
+ 파일명: reset.css
+ 설  명: css 초기화
+ 작성자:	kmmin127@idstrust.com
+ 최초작성일: 20230416
+ 최종수정일: 20230416
+*/
+
+/**********************************************************************************
+common
+***********************************************************************************/
+/**
+ * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+ * http://cssreset.com
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-moz-font-smoothing: unset;
+	font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+/**********************************************************************************
+common
+***********************************************************************************/
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+html {background: #fff; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%}
+body {width: 100%; Background-color: #fff; line-height: 1;}
+ol, ul {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,
+q:before, q:after {content: '';content: none;}
+table {border-collapse: collapse;border-spacing: 0;table-layout: fixed;}
+a {text-decoration: none;color: inherit;}
+select, input, button, textarea {
+	display: inline-block;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+embed, object {position: absolute;}
+button {padding: 0;margin: 0;vertical-align: top;cursor: pointer;background-color: transparent;border: 0;}
+button:focus{outline: none;}
+img {vertical-align: top;}
+input[disabled] + label,
+input[readonly] + label {cursor: default !important;}
+
+*, *:before, *:after{-webkit-box-sizing:border-box;box-sizing:border-box;}
+button, input, select, textarea{margin:0;}
+button{vertical-align:top; cursor:pointer;}
+strong{font-weight:700;}
+h1, h2, h3, h4, h5, h6, pre{font-weight:400; font-size:100%; line-height:1;}
+caption, legend{width:0; height:0; font-size:1px; text-indent:-9999rem; line-height:0; margin:0; padding:0; border:0; }
+a, a:active, a:focus, a:hover, a:link, a:visited{ text-decoration:none;}
+a.disabled,
+button[disabled],
+input[disabled]{pointer-events:none;cursor:default;}
+input::-ms-clear{display:none;}
+.offscreen{display:inline-block;overflow:hidden;position:absolute;width:1px;height:1px;font-size:1px;line-height:0;clip:rect(1px 1px 1px 1px);}
+::selection{background:#143999;color:#fff;}
+::-moz-selection{background:#143999;color:#fff;}
+/* ie/chrome/firefox 기본 제공되는 삭제 버튼 기능 제거  */
+input::-ms-clear,
+input::-ms-reveal {display: none; width : 0; height: 0;}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration { display: none; }
+/* 파이어폭스 input[type=number] 애로우 버튼 숨김 */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{margin:0;-webkit-appearance:none;}
+input[type=number]{-moz-appearance:textfield;}
+/* 파이어폭스 51+, 크롬 57+ : placeholder style */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:not([disabled]):-webkit-autofill,
+input:not([disabled]):-webkit-autofill:hover,
+input:not([disabled]):-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:not([disabled]):-webkit-autofill,
+textarea:not([disabled]):-webkit-autofill:hover,
+textarea:not([disabled]):-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:not([disabled]):-webkit-autofill,
+select:not([disabled]):-webkit-autofill:hover,
+select:not([disabled]):-webkit-autofill:focus {transition: background-color 5000s ease-in-out 0s;-webkit-box-shadow: 0 0 0 1000px white inset !important;}
+input[disabled]:-internal-autofill-selected,
+input[disabled]:-webkit-autofill,
+input[disabled]:-webkit-autofill:hover,
+input[disabled]:-webkit-autofill:focus,
+input[readonly]:-internal-autofill-selected,
+input[readonly]:-webkit-autofill,
+input[readonly]:-webkit-autofill:hover,
+input[readonly]:-webkit-autofill:focus,
+textarea[disabled]:-internal-autofill-selected,
+textarea[disabled]:-webkit-autofill,
+textarea[disabled]:-webkit-autofill:hover,
+textarea[disabled]:-webkit-autofill:focus,
+textarea[readonly]:-internal-autofill-selected,
+textarea[readonly]:-webkit-autofill,
+textarea[readonly]:-webkit-autofill:hover,
+textarea[readonly]:-webkit-autofill:focus,
+select[disabled]:-internal-autofill-selected,
+select[disabled]:-webkit-autofill,
+select[disabled]:-webkit-autofill:hover,
+select[disabled]:-webkit-autofill:focus,
+select[readonly]:-internal-autofill-selected,
+select[readonly]:-webkit-autofill,
+select[readonly]:-webkit-autofill:hover,
+select[readonly]:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0 1000px #f8f8f8 inset !important;}
+

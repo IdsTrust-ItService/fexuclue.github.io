@@ -1,0 +1,65 @@
+@import 'scss_header';
+@import url('reset.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css");
+
+// s :reset override
+body {
+	font-family: $fontKor;
+	font-size: calc(0.75em + 1vw);;
+	scroll-behavior:smooth;
+	overscroll-behavior:none;
+}
+
+select, input, button, textarea {
+	font-family: $fontKor;
+}
+
+// e: reset override
+select, input, textarea {
+	font-size: $defaultFontSize;
+}
+
+input::-webkit-input-placeholder {
+	color: $defaultTextColor;
+}
+
+/* 크롬 4–56 : placeholder style */
+input:-moz-placeholder {
+	color: $defaultTextColor;
+}
+
+/* 파이어폭스 4–18 : placeholder style */
+input::-moz-placeholder {
+	color: $defaultTextColor;
+}
+
+/* 파이어폭스 19–50 : placeholder style */
+input:-ms-input-placeholder {
+	color: $defaultTextColor;
+}
+
+/* 인터넷 익스플로러 10+ : placeholder style */
+input::-webkit-input-placeholder {
+	color: $defaultTextColor;
+}
+
+input:-ms-input-placeholder {
+	color: $defaultTextColor;
+}
+
+input::-ms-input-placeholder {
+	color: $defaultTextColor;
+}
+
+input::placeholder {
+	color: $defaultTextColor;
+}
+/* 파이어폭스 input[type=number] 애로우 버튼 숨김 */
+.skip-nav-wrap {
+	font-size: 0;
+	line-height: 0;
+}
+.hide {display: none !important;}
+
+@import 'view_common';
+@import 'view_contents';
