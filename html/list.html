@@ -1,329 +1,366 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport">
-	<meta name="theme-color" content="#2B388F">
-	<meta name="apple-mobile-web-app-status-bar-style" content="#2B388F">
-	<meta content="text/javascript" http-equiv="Script-Type">
-	<meta content="text/css" http-equiv="Style-Type">
-	<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-	<title>펙수클루 학회용 홈페이지</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"
+          name="viewport">
+    <meta name="theme-color" content="#2B388F">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#2B388F">
+    <meta content="text/javascript" http-equiv="Script-Type">
+    <meta content="text/css" http-equiv="Style-Type">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <title>펙수클루 학회용 홈페이지</title>
 
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-	<link href="../resources/css/common.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link href="../resources/css/common.min.css" rel="stylesheet"/>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 </head>
 <body>
+<script type="application/javascript">
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        f_initEvent();
+        retreiveCategory();
+        retreiveList();
+    });
+
+
+    function f_initEvent() {
+        document.querySelector("#ip-search").addEventListener("keydown", function (e) {
+            retreiveList();
+        });
+
+        document.querySelector(".is-prev").addEventListener("click", function (e) {
+            let _idx = getSelectedItemIdx();
+            if(_idx === 0)
+                return;
+            redrawPdfContent(--_idx);
+        });
+        document.querySelector(".is-next").addEventListener("click", function (e) {
+            let _idx = getSelectedItemIdx();
+
+            if(_idx === (getFetchList().length-1))
+                return;
+            redrawPdfContent(++_idx);
+        });
+    }
+
+    function retreiveCategory() {
+        fetch("./categorylist.json").then(_val => _val.json()).then(_result => fetchCategory(_result));
+    }
+
+    function retreiveList() {
+        fetch("./list.json").then(_val => _val.json()).then(_result => fetchList(_result));
+    }
+
+    let _category = {};
+
+    function setCategoryList(_list) {
+        this._category = _list;
+    }
+
+    function getFetchCategoryList() {
+        return this._category;
+    }
+
+    function fetchCategory(_result) {
+        setCategoryList(_result);
+        redrawCategory(_result);
+    }
+
+    function redrawCategory(_result) {
+        let $divCategory = document.querySelector("#divCategory");
+        let $ul = document.createElement('ul');
+
+        _result.map((_item, index) => {
+            $ul.innerHTML +=
+                `<li onclick="eventClickCategory('${_item.id}')"  id='${_item.id}' ><a href="#" >${_item.text}</a></li>`;
+        });
+
+        $divCategory.appendChild($ul);
+
+    }
+
+    function eventClickCategory(_id) {
+        const _list = getFetchCategoryList();
+        _list.map(_item => document.querySelector(`#${_item.id}`).classList.remove('is-active'));
+        document.querySelector(`#${_id}`).classList.add("is-active");
+
+        retreiveList();
+    }
+
+
+    let _list = {};
+
+    function setFetchList(_list) {
+        this._list = _list;
+    }
+
+    function getFetchList() {
+        return this._list;
+    }
+
+    function fetchList(_result) {
+        setFetchList(_result);
+        redrawList(_result);
+    }
+
+    function redrawList(_result) {
+        document.querySelector(".wrap-list").innerHTML = "";
+        const selectedCategory = [...document.querySelector("#divCategory").children[0].children]
+            .filter((_item) => _item.className === "is-active")[0]?.id || "";
+        const searchTxt = document.querySelector("#ip-search").value;
+
+        const filteredList = _result.filter(_item =>
+                    (_item.categoryId === selectedCategory
+                        || selectedCategory === "")
+                    && (_item.title.indexOf(searchTxt) > -1
+                        || _item.content.indexOf(searchTxt) > -1));
+
+        if(filteredList.length === 0) {
+            document.querySelector(".wrap-list").innerHTML = "<div style='text-align: center;'>검색된 정보가 없습니다.</div>";
+        }
+
+
+        filteredList.map(((_filteredItem, idx) => {
+                    document.querySelector(".wrap-list").innerHTML +=
+                        `<div class="box-list">
+                    <a href="javascript:;" class="btn-popup" onClick="openDialog(${idx})">
+                    <div class="thumb">
+                    <img src="${_filteredItem.thumbnail || "../resources/images/thumbnail.png"}" />
+                        </div>
+                        <div class="text" onclick="openDialog(${idx})">
+                            <p class="title">${_filteredItem.title}</p>
+                            <p class="desc">${_filteredItem.content}</p>
+                        </div>
+                    </a>
+                </div>`;
+                }
+            ));
+    }
+
+    let selectedIdx = -1;
+    function setSelectedItemIdx(_idx) {
+        this.selectedIdx = _idx;
+    }
+
+    function getSelectedItemIdx() {
+        return this.selectedIdx;
+    }
+
+    function openDialog(_selectedIdx) {
+        $('.pop-ex-01').dialog('open');
+        redrawPdfContent(_selectedIdx);
+    }
+
+    function redrawPdfContent(_selectedIdx) {
+        const selectedItem = getFetchList()[_selectedIdx];
+        setSelectedItemIdx(_selectedIdx);
+        document.querySelector("#embedPdf").src = "";
+        console.log(selectedItem.pdf);
+        document.querySelector("#embedPdf").src = selectedItem.pdf+"#toolbar=0&navpanes=0&scrollbar=0";
+        if(selectedItem.pdf)
+            setTimeout(()=>{
+                document.querySelector("#embedPdf").src = selectedItem.pdf+"#toolbar=0&navpanes=0&scrollbar=0";},0);
+        else {
+            alert("PDF자료를 찾을 수 없습니다.");
+            $('.pop-ex-01').dialog('close');
+        }
+    }
+</script>
 <div class="wrap">
+    <main>
+        <header>
+            <div class="inner">
+                <h1><span class="offscreen">DAEWOONG</span></h1>
+                <p class="desc">The New Wave of GERD Treatment, Fexuprazan</p>
 
-	<main>
-		<header>
-			<div class="inner">
-				<h1><span class="offscreen">DAEWOONG</span></h1>
-				<p class="desc">The New Wave of GERD Treatment, Fexuprazan</p>
+                <!-- s : search -->
+                <div class="box-search">
+                    <label for="ip-search" class="offscreen">검색어 입력</label>
+                    <input type="search" id="ip-search" placeholder="Search">
+                    <button type="submit"><span class="offscreen">검색하기</span></button>
+                </div>
+                <!-- e : search -->
 
-				<!-- s : search -->
-				<div class="box-search">
-					<label for="ip-search" class="offscreen">검색어 입력</label>
-					<input type="search" id="ip-search" placeholder="Search">
-					<button type="submit"><span class="offscreen">검색하기</span></button>
-				</div>
-				<!-- e : search -->
+                <nav><!-- "btn-nav-open" toggle시 "is-active" toggle -->
+                    <div id="divCategory" class="inner">
+                        <!-- s : gnb -->
+                        <!-- desc :: a href 혹은 button 중에 적용하기 편한 것으로 반영해주세요! -->
+                        <!--                        <ul>-->
+                        <!--                            <li class="is-active"><a href="#">Benefit of P-CAB</a></li>-->
+                        <!--                            <li><button type="button">Value Proposition of Fexuprazan</button></li>-->
+                        <!--                            <li><a href="#">Publication & Scientific Congresses</a></li>-->
+                        <!--                            <li><button type="button">Global Statuss</button></li>-->
+                        <!--                        </ul>-->
+                        <!-- e : gnb -->
+                    </div>
+                    <!-- s : gnb open/close 버튼 (only table&mobile) -->
+                    <button type="button" class="btn-nav-open"><span class="offscreen">open</span></button>
+                    <!-- e : gnb open/close 버튼 (only table&mobile) -->
+                </nav>
 
-				<nav><!-- "btn-nav-open" toggle시 "is-active" toggle -->
-					<div class="inner">
-						<!-- s : gnb -->
-						<!-- desc :: a href 혹은 button 중에 적용하기 편한 것으로 반영해주세요! -->
-						<ul>
-							<li class="is-active"><a href="#">Benefit of P-CAB</a></li>
-							<li><button type="button">Value Proposition of Fexuprazan</button></li>
-							<li><a href="#">Publication & Scientific Congresses</a></li>
-							<li><button type="button">Global Statuss</button></li>
-						</ul>
-						<!-- e : gnb -->
-					</div>
-					<!-- s : gnb open/close 버튼 (only table&mobile) -->
-					<button type="button" class="btn-nav-open"><span class="offscreen">open</span></button>
-					<!-- e : gnb open/close 버튼 (only table&mobile) -->
-				</nav>
+                <p class="copyright">Copyright 2023 DAEWOONG PHARMACEUTICAL CO.,LTD.<br>All rights reserverd.</p>
+            </div>
+        </header>
 
-				<p class="copyright">Copyright 2023 DAEWOONG PHARMACEUTICAL CO.,LTD.<br>All rights reserverd.</p>
-			</div>
-		</header>
+        <section>
+            <!-- s : contents -->
+            <div class="wrap-list">
 
-		<section>
-		<!-- s : contents -->
-			<div class="wrap-list">
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumb_01.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Safety, tolerability, pharmacodynamics and pharmacokinetics of fexuprazan in healthy male subjects</p>
-							<p class="desc">SUNWOO J, et al. Aliment Pharmacol Ther. 2018;48(2):206-218.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumb_02.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Pharmacodynamics and pharmacokinetics of fexuprazan in healthy subjects with different ethnicities</p>
-							<p class="desc">HWANG JG, et al. Aliment Pharmacol Ther. 2020;52(11-12):1648-1657.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumb_03.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Pharmacodynamic and Pharmacokinetic Drug Interactions between Fexuprazan and Aspirin in Healthy Subjects</p>
-							<p class="desc">Oh JJ, et al. Pharmaceutics. 2023;15(2):549.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumbnail.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Efficacy and safety of fexuprazan compared with esomeprazole in erosive esophagitis</p>
-							<p class="desc">Lee KN, et al. World J Gastroenterol.2022;28(44):6294-6308.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumbnail.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Efficacy and Safety of Fexuprazan in Patients with Acute or Chronic Gastritis</p>
-							<p class="desc">Kim GH, et al. Gut Liver. 2023.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumbnail.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Pharmacokinetic drug interaction between fexuprazan and non-steroidal anti-inflammatory drugs in healthy subjects    </p>
-							<p class="desc">Poster presentation. ASCPT 124th 2023. PII-014-P.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumbnail.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Efficacy and safety of fexuprazan according to the timing of dosing in patients with erosive esophagitis</p>
-							<p class="desc">Poster presentation. DDW 54th 2023. Su1311-P.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumbnail.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Phase 3, randomized controlled trial with fexuprazan vs. esomeprazole in Chinese patients with erosive esophagitis</p>
-							<p class="desc">Poster presentation. DDW 54th 2023. Su1303-P.</p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-				<!-- S : 목록 loop -->
-				<div class="box-list">
-					<a href="javascript:;" class="btn-popup" onclick="javascript:$('.pop-ex-01').dialog('open');">
-						<div class="thumb">
-							<img src="../resources/images/thumbnail.png" alt="Establishment of a modified Kyoto classification scoring model and its significance in the diagnosis"/>
-						</div>
-						<div class="text" onclick="javascript:$('.pop-ex-01').dialog('open');">
-							<p class="title">Global Status of Partnership and Registration</p>
-							<p class="desc"></p>
-						</div>
-					</a>
-				</div>
-				<!-- E : 목록 loop -->
-			</div>
-		<!-- e : contents -->
-		</section>
-	</main>
-	<footer>
-		<div class="logo"><span class="offscreen">DAEWOONG</span></div>
-		<div class="address">
-			<ul>
-				<li>CEO : Seng-ho Jeon, Chang-jae Lee</li>
-				<li>Corporate registration number : 124-86-01143</li>
-				<li>Address : Bongeunsa-ro 114-gil 12, Gangnam-gu, Seoul, Korea</li>
-				<li>TEL : 82-2-550-8880</li>
-			</ul>
-		</div>
-		<p class="copyright">Copyright 2023 BIOTECHNOLOGY CO.,LTD. All rights reserverd.</p>
-	</footer>
+                <!-- E : 목록 loop -->
+            </div>
+            <!-- e : contents -->
+        </section>
+    </main>
+    <footer>
+        <div class="logo"><span class="offscreen">DAEWOONG</span></div>
+        <div class="address">
+            <ul>
+                <li>CEO : Seng-ho Jeon, Chang-jae Lee</li>
+                <li>Corporate registration number : 124-86-01143</li>
+                <li>Address : Bongeunsa-ro 114-gil 12, Gangnam-gu, Seoul, Korea</li>
+                <li>TEL : 82-2-550-8880</li>
+            </ul>
+        </div>
+        <p class="copyright">Copyright 2023 BIOTECHNOLOGY CO.,LTD. All rights reserverd.</p>
+    </footer>
 
-	<!--S: pop-ex-01 -->
-	<div class="pop-ex-01" data-role="dialog" title="Create new user">
-		<div class="offscreen js-title">DAEWOONG</div>
-		<div class="popup-content">
-			<!-- s : pdf iframe-->
-			<!-- desc :: 적용후 스타일 확인 필요한 부분이니 이상하면 피드백주세요!! -->
-			<iframe src="" width="100%" height="100%" scrolling="auto"></iframe>
-			<!-- e : pdf iframe -->
-		</div>
-		<!-- s : pdf arrow -->
-		<div class="pdf-util">
-			<button type="button" class="pdf-arrow is-prev"><span class="offscreen">prev</span></button>
-			<button type="button" class="pdf-arrow is-next"><span class="offscreen">next</span></button>
-		</div>
-		<!-- e : pdf arrow -->
+    <!--S: pop-ex-01 -->
+    <div class="pop-ex-01" data-role="dialog" title="Create new user" >
+        <div class="offscreen js-title">DAEWOONG</div>
+        <div class="popup-content" style="padding: 0px">
+            <!-- s : pdf iframe-->
+            <!-- desc :: 적용후 스타일 확인 필요한 부분이니 이상하면 피드백주세요!! -->
+            <embed id="embedPdf" width="100%" height="100%"></embed>
+            <!-- e : pdf iframe -->
+        </div>
+        <!-- s : pdf arrow -->
+        <div class="pdf-util">
+            <button type="button" class="pdf-arrow is-prev"><span class="offscreen">prev</span></button>
+            <button type="button" class="pdf-arrow is-next"><span class="offscreen">next</span></button>
+        </div>
+        <!-- e : pdf arrow -->
+    </div>
+    <!--E: pop-ex-01 -->
 
-	</div>
-	<!--E: pop-ex-01 -->
+    <script>
+        $(function () {
+            if ($('[data-role=dialog]').length > 0) {
+                $.extend($.ui.dialog.prototype.options, {
+                    height: "auto",
+                    modal: true,
+                    autoOpen: false,
+                    closeText: "팝업 닫기",
+                    resize: false,
+                    draggable: false,
+                    create: function (event, ui) {
+                        $(event.target).dialog("option", {
+                            "width": $(event.target).data("width")
+                        });
+                        resizePopupPos();
+                    },
+                    open: function (event, ui) {
+                        resizePopupPos();
 
-	<script>
-	$( function() {
-		if( $('[data-role=dialog]').length > 0 ) {
-			$.extend($.ui.dialog.prototype.options, {
-				height: "auto",
-				modal: true,
-				autoOpen: false,
-				closeText: "팝업 닫기",
-				resize:false,
-				draggable: false,
-				create: function( event, ui ) {
-					$(event.target).dialog("option", {
-						"width" : $(event.target).data("width")
-					});
-					resizePopupPos();
-				},
-				open: function( event, ui ) {
-					resizePopupPos();
+                        var that;
+                        that = this;
+                        $('body').css({
+                            'top': $(window).scrollTop() * -1,
+                        });
+                        $('body').addClass('ovh');
 
-					var that;
-					that = this;
-					$('body').css({
-						'top': $(window).scrollTop() * -1,
-					});
-					$('body').addClass('ovh');
+                    },
+                    beforeClose: function (event, ui) {
+                        /*$("html, body").removeClass('ovh');*/
 
-				},
-				beforeClose: function( event, ui ) {
-					/*$("html, body").removeClass('ovh');*/
+                        $(this).closest('.ui-dialog-container').removeClass('open');
+                        if ($('.ui-dialog-container.open').length === 0) {
+                            scrollTopPos = $('body').css('top');
+                            $('body').css({
+                                'top': 0,
+                            });
+                            $('body').removeClass('ovh');
+                            $(window).scrollTop(parseInt(scrollTopPos) * -1);
+                        }
 
-					$(this).closest('.ui-dialog-container').removeClass('open');
-					if ($('.ui-dialog-container.open').length === 0) {
-						scrollTopPos = $('body').css('top');
-						$('body').css({
-							'top': 0,
-						});
-						$('body').removeClass('ovh');
-						$(window).scrollTop(parseInt(scrollTopPos) * -1);
-					}
+                        console.log(scrollTopPos);
 
-					console.log(scrollTopPos);
+                    }
+                });
+            }
+        })
 
-				}
-			});
-		}
-	})
+        $(document).ready(function () {
+            var navBtn = $('.btn-nav-open');
 
-	$(document).ready(function() {
-		var navBtn = $('.btn-nav-open');
+            navBtn.on('click', function (e) {
+                $('nav').toggleClass("is-active", 250);
+                e.preventDefault();
+            });
 
-		navBtn.on('click', function(e) {
-			$('nav').toggleClass("is-active", 250);
-			e.preventDefault();
-		});
+            $(window).resize(function () {
+                resizePopupPos();
+            });
 
-		$( window ).resize(function() {
-			resizePopupPos();
-		});
+            // 팝업
+            $("[data-role=dialog]").dialog();
+        });
 
-		// 팝업
-		$("[data-role=dialog]").dialog();
-	});
+        /* 화면 리사이징 할 때 팝업 위치 갱신 */
+        function resizePopupPos() {
+            if ($('.ui-dialog-content:visible').length > 0) {
+                if (document.documentElement.clientWidth < $(".ui-dialog-content:visible").innerWidth() || document.documentElement.clientHeight < $(".ui-dialog-content:visible").innerHeight() + 103) { // 화면이 클때
+                    /*$("html, body").removeClass('ovh');*/
 
-	/* 화면 리사이징 할 때 팝업 위치 갱신 */
-	function resizePopupPos() {
-		if ($('.ui-dialog-content:visible').length > 0) {
-			if (document.documentElement.clientWidth < $(".ui-dialog-content:visible").innerWidth() || document.documentElement.clientHeight < $(".ui-dialog-content:visible").innerHeight() + 103) { // 화면이 클때
-				/*$("html, body").removeClass('ovh');*/
-
-				if (document.documentElement.clientWidth - 150 < $(".ui-dialog-content:visible").innerWidth()) {
-					if (document.documentElement.clientHeight < $(".ui-dialog-content:visible").innerHeight() + 103) {
-						$(".ui-dialog-content:visible").dialog("option", "position", {
-							my: "left top",
-							at: "left top",
-							"collision": "fit",
-							of: window
-						});
-					} else {
-						$(".ui-dialog-content:visible").dialog("option", "position", {
-							my: "left center",
-							at: "left center",
-							"collision": "fit",
-							of: window
-						});
-					}
-				} else {
-					if (document.documentElement.clientHeight < $(".ui-dialog-content:visible").innerHeight() + 103) {
-						$(".ui-dialog-content:visible").dialog("option", "position", {
-							my: "center top",
-							at: "center top",
-							"collision": "fit",
-							of: window
-						});
-					} else {
-						$(".ui-dialog-content:visible").dialog("option", "position", {
-							my: "center",
-							at: "center",
-							"collision": "fit",
-							of: window
-						});
-					}
-				}
-			} else {
-				/*$("html, body").addClass('ovh');*/
-				$(".ui-dialog-content:visible").dialog("option", "position", {
-					my: "center",
-					at: "center",
-					"collision": "fit",
-					of: window
-				});
-			}
-		}
-	}
-	</script>
+                    if (document.documentElement.clientWidth - 150 < $(".ui-dialog-content:visible").innerWidth()) {
+                        if (document.documentElement.clientHeight < $(".ui-dialog-content:visible").innerHeight() + 103) {
+                            $(".ui-dialog-content:visible").dialog("option", "position", {
+                                my: "left top",
+                                at: "left top",
+                                "collision": "fit",
+                                of: window
+                            });
+                        } else {
+                            $(".ui-dialog-content:visible").dialog("option", "position", {
+                                my: "left center",
+                                at: "left center",
+                                "collision": "fit",
+                                of: window
+                            });
+                        }
+                    } else {
+                        if (document.documentElement.clientHeight < $(".ui-dialog-content:visible").innerHeight() + 103) {
+                            $(".ui-dialog-content:visible").dialog("option", "position", {
+                                my: "center top",
+                                at: "center top",
+                                "collision": "fit",
+                                of: window
+                            });
+                        } else {
+                            $(".ui-dialog-content:visible").dialog("option", "position", {
+                                my: "center",
+                                at: "center",
+                                "collision": "fit",
+                                of: window
+                            });
+                        }
+                    }
+                } else {
+                    /*$("html, body").addClass('ovh');*/
+                    $(".ui-dialog-content:visible").dialog("option", "position", {
+                        my: "center",
+                        at: "center",
+                        "collision": "fit",
+                        of: window
+                    });
+                }
+            }
+        }
+    </script>
 
 
 </div>

@@ -1,0 +1,70 @@
+[
+
+
+  {
+    "id": "no_1",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/1.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/1.+sunwoo2018.pdf",
+    "categoryId" : "category3",
+    "title" : "Safety, tolerability, pharmacodynamics and pharmacokinetics\n\nof fexuprazan in healthy male subjects",
+    "content" : "SUNWOO J, et al. Aliment Pharmacol Ther. 2018;48(2):206-218."
+  }, {
+    "id": "no_2",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/2.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/2.+Fexuprazan_1%EC%83%81(Brindging+PKPD).pdf",
+    "categoryId" : "category3",
+    "title" : "Pharmacodynamics and pharmacokinetics of fexuprazan in healthy subjects with different ethnicities",
+    "content" : "HWANG JG, et al. Aliment Pharmacol Ther. 2020;52(11-12):1648-1657."
+  }, {
+    "id": "no_3",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/3.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/3.+pharmaceutics-15-00549+(2).pdf",
+    "categoryId" : "category3",
+    "title" : "Pharmacodynamic and Pharmacokinetic Drug Interactions between Fexuprazan and Aspirin in Healthy Subjects",
+    "content" : "Oh JJ, et al. Pharmaceutics. 2023;15(2):549."
+  }, {
+    "id": "no_4",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/4.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/4.+Lee+KN+et+al..pdf",
+    "categoryId" : "category3",
+    "title" : "Efficacy and safety of fexuprazan compared with esomeprazole in erosive esophagitis",
+    "content" : "Lee KN, et al. World J Gastroenterol.2022;28(44):6294-6308."
+  }, {
+    "id": "no_5",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/5.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/5.+Kim+GH+et+al..pdf",
+    "categoryId" : "category3",
+    "title" : "Efficacy and Safety of Fexuprazan in Patients with Acute or\n\nChronic Gastritis",
+    "content" : "Kim GH, et al. Gut Liver. 2023."
+  }, {
+    "id": "no_6",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/6.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category3/6.+2023+ASCPT_Poster_Mar+2023_SNUH+(105).pdf",
+    "categoryId" : "category3",
+    "title" : "Pharmacokinetic drug interaction between fexuprazan and non-steroidal anti-inflammatory drugs in healthy subjects",
+    "content" : "Poster presentation. ASCPT 124th 2023. PII-014-P."
+  }, {
+    "id": "no_7",
+    "thumbnail" : "",
+    "pdf" : "",
+    "categoryId" : "category3",
+    "title" : "Efficacy and safety of fexuprazan according to the timing of dosing in patients with erosive esophagitis",
+    "content" : "Poster presentation. DDW 54th 2023. Su1311-P."
+  }, {
+    "id": "no_8",
+    "thumbnail" : "",
+    "pdf" : "",
+    "categoryId" : "category3",
+    "title" : "Phase 3, randomized controlled trial with fexuprazan vs. esomeprazole in Chinese patients with erosive esophagitis",
+    "content" : "Poster presentation. DDW 54th 2023. Su1303-P."
+  },
+
+  {
+    "id": "no_1",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category4/1.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category4/1.+%EB%AF%B8%EA%B5%AD+%EC%86%8C%ED%99%94%EA%B8%B0%ED%95%99%ED%9A%8C_%EA%B8%80%EB%A1%9C%EB%B2%8C+%EC%A7%84%EC%B6%9C+%ED%98%84%ED%99%A9+(%ED%8E%99%EC%88%98%ED%81%B4%EB%A3%A8+%EB%A1%9C%EA%B3%A0X).pdf",
+    "categoryId" : "category4",
+    "title" : "Global Status of Fexuprazan",
+    "content" : "Partnership and Registration"
+  }
+]
