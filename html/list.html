@@ -152,8 +152,16 @@
     }
 
     function openDialog(_selectedIdx) {
-        $('.pop-ex-01').dialog('open');
+        const selectedItem = getFetchList()[_selectedIdx];
+        if(!selectedItem.pdf) {
+            alert("PDF자료를 찾을 수 없습니다.");
+            return;
+        }
+
         redrawPdfContent(_selectedIdx);
+
+        $('.pop-ex-01').dialog('open');
+
     }
 
     function redrawPdfContent(_selectedIdx) {
@@ -163,8 +171,7 @@
         console.log(selectedItem.pdf);
         document.querySelector("#embedPdf").src = selectedItem.pdf+"#toolbar=0&navpanes=0&scrollbar=0";
         if(selectedItem.pdf)
-            setTimeout(()=>{
-                document.querySelector("#embedPdf").src = selectedItem.pdf+"#toolbar=0&navpanes=0&scrollbar=0";},0);
+            setTimeout(()=>{document.querySelector("#embedPdf").src = selectedItem.pdf+"#toolbar=0&navpanes=0&scrollbar=0";});
         else {
             alert("PDF자료를 찾을 수 없습니다.");
             $('.pop-ex-01').dialog('close');
