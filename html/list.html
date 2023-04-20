@@ -49,11 +49,11 @@
     }
 
     function retreiveCategory() {
-        fetch("./categorylist.json").then(_val => _val.json()).then(_result => fetchCategory(_result));
+        fetch("https://fexuclue.s3.ap-northeast-2.amazonaws.com/categorylist.json").then(_val => _val.json()).then(_result => fetchCategory(_result));
     }
 
     function retreiveList() {
-        fetch("./list.json").then(_val => _val.json()).then(_result => fetchList(_result));
+        fetch("https://fexuclue.s3.ap-northeast-2.amazonaws.com/list.json").then(_val => _val.json()).then(_result => fetchList(_result));
     }
 
     let _category = {};
