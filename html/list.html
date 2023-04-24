@@ -75,7 +75,6 @@
         });
 
         document.querySelector(".is-prev").addEventListener("click", function (e) {
-
             let _idx = getSelectedItemIdx();
 
             if (_idx === 0)
@@ -83,6 +82,7 @@
             redrawPdfContent(--_idx);
         });
         document.querySelector(".is-next").addEventListener("click", function (e) {
+
             let _idx = getSelectedItemIdx();
 
             if (_idx === (getFilteredMaxSize() - 1))
@@ -232,6 +232,8 @@
     }
 
     function redrawPdfContent(_selectedIdx) {
+
+
         const selectedItem = getFetchList()[_selectedIdx];
         setSelectedItemIdx(_selectedIdx);
         // document.querySelector("#embedPdf").src = "";
@@ -241,7 +243,6 @@
         // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
         if (selectedItem.pdf)
             setTimeout(() => {
-                console.log("../web/viewer.html?file="+selectedItem.pdf);
                 // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
                 // document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf;
                 const url = selectedItem.pdf;
@@ -262,6 +263,8 @@
                         renderPage(i+1, canvas);
                     }
                 });
+
+                document.querySelector('.ui-dialog-content').scrollTo(0, 0);
             });
         else {
             alert("PDF자료를 찾을 수 없습니다.");
