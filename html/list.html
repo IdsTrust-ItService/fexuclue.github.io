@@ -12,20 +12,70 @@
     <title>펙수클루 학회용 홈페이지</title>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link href="../resources/css/common.min.css" rel="stylesheet"/>
+    <link href="../resources/css/common.css?ver=1" rel="stylesheet"/>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.min.js"></script>
+    <style type="text/css">
+        #canvases canvas {
+            margin: 0px auto;
+            display: block;
+            width: 100%;
+
+            /*height: 100%;*/
+        }
+    </style>
 </head>
 <body>
+
+
+
 <script type="application/javascript">
 
+    var pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1;
 
     document.addEventListener("DOMContentLoaded", function () {
         f_initEvent();
         retreiveCategory();
-        retreiveList();
+
+
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
     });
+
+    function renderPage(num, canvas) {
+        var ctx = canvas.getContext('2d');
+        pageRendering = true;
+        // Using promise to fetch the page
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport({scale: scale});
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Render PDF page into canvas context
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+
+            // Wait for rendering to finish
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    // New page rendering is pending
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+    }
 
 
     function f_initEvent() {
@@ -66,25 +116,6 @@
                 || _item.content.indexOf(searchTxt) > -1)).length;
     }
 
-    function getFilteredMinIdx() {
-        const selectedCategory = getSelectedCategory();
-        const searchTxt = document.querySelector("#ip-search").value;
-
-        let minIdx = 0;
-        for(let i = 0; i < getFetchList().length; i++) {
-            const _item = getFetchList()[i];
-            console.log(_item);
-            if((_item.categoryId === selectedCategory
-                || selectedCategory === "")
-                && (_item.title.indexOf(searchTxt) > -1
-                || _item.content.indexOf(searchTxt) > -1)) {
-                minIdx = i;
-                break;
-            }
-        }
-
-        return minIdx;
-    }
 
 
     function retreiveCategory() {
@@ -121,6 +152,7 @@
 
         $divCategory.appendChild($ul);
 
+        retreiveList();
     }
 
     function eventClickCategory(_id) {
@@ -160,7 +192,10 @@
                 || _item.content.indexOf(searchTxt) > -1));
 
         if (filteredList.length === 0) {
-            document.querySelector(".wrap-list").innerHTML = "<div style='text-align: center;'>검색된 정보가 없습니다.</div>";
+            document.querySelector(".wrap-list").innerHTML = `<div class="box-list no-data">
+                <i class="ic ic-file"></i>
+                <p><span>keyword</span>에 대한<br>검색된 정보가 없습니다.</p>
+            </div>`;
         }
 
 
@@ -168,16 +203,16 @@
                 _filteredItem.idx = idx;
                 document.querySelector(".wrap-list").innerHTML +=
                     `<div class="box-list">
-                <a href="javascript:;" class="btn-popup" onClick="openDialog(${idx})">
-                <div class="thumb">
-                <img src="${_filteredItem.thumbnail || "../resources/images/thumbnail.png"}" />
-                    </div>
-                    <div class="text" onclick="openDialog(${idx})">
-                        <p class="title">${_filteredItem.title}</p>
-                        <p class="desc">${_filteredItem.content}</p>
-                    </div>
-                </a>
-            </div>`;
+                        <a href="javascript:;" class="btn-popup" onClick="openDialog(${idx})">
+                        <div class="thumb">
+                        <img src="${_filteredItem.thumbnail || "../resources/images/thumbnail.png"}" />
+                            </div>
+                            <div class="text" onclick="openDialog(${idx})">
+                                <p class="title">${_filteredItem.title}</p>
+                                <p class="desc">${_filteredItem.content}</p>
+                            </div>
+                        </a>
+                    </div>`;
             }
         ));
     }
@@ -208,12 +243,34 @@
     function redrawPdfContent(_selectedIdx) {
         const selectedItem = getFetchList()[_selectedIdx];
         setSelectedItemIdx(_selectedIdx);
-        document.querySelector("#embedPdf").src = "";
-        console.log(selectedItem.pdf);
-        document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf + "#toolbar=0&navpanes=0&scrollbar=0";
+        // document.querySelector("#embedPdf").src = "";
+        // console.log(selectedItem.pdf);
+
+        // document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf;
+        // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
         if (selectedItem.pdf)
             setTimeout(() => {
-                document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf + "#toolbar=0&navpanes=0&scrollbar=0";
+                console.log("../web/viewer.html?file="+selectedItem.pdf);
+                // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
+                // document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf;
+                const url = selectedItem.pdf;
+                pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+                    pdfDoc = pdfDoc_;
+
+                    const pages = parseInt(pdfDoc.numPages);
+
+                    var canvasHtml = '';
+                    for (var i = 0; i < pages; i++) {
+                        canvasHtml += '<canvas id="canvas_' + i + '"></canvas>';
+                    }
+
+                    document.getElementById('canvases').innerHTML = canvasHtml;
+
+                    for (var i = 0; i < pages; i++) {
+                        var canvas = document.getElementById('canvas_' + i);
+                        renderPage(i+1, canvas);
+                    }
+                });
             });
         else {
             alert("PDF자료를 찾을 수 없습니다.");
@@ -260,7 +317,10 @@
         <section>
             <!-- s : contents -->
             <div class="wrap-list">
-
+<!--                <div class="box-list no-data">-->
+<!--                    <i class="ic ic-file"></i>-->
+<!--                    <p><span>keyword</span>에 대한<br>검색된 정보가 없습니다.</p>-->
+<!--                </div>-->
                 <!-- E : 목록 loop -->
             </div>
             <!-- e : contents -->
@@ -280,18 +340,20 @@
     </footer>
 
     <!--S: pop-ex-01 -->
-    <div class="pop-ex-01" data-role="dialog" title="Create new user" style="overflow:hidden">
+    <div class="pop-ex-01" data-role="dialog" title="Create new user" >
         <div class="offscreen js-title">DAEWOONG</div>
-        <div class="popup-content" style="padding: 0px">
+        <div class="popup-content">
             <!-- s : pdf iframe-->
             <!-- desc :: 적용후 스타일 확인 필요한 부분이니 이상하면 피드백주세요!! -->
-            <iframe id="embedPdf" width="100%" height="100%"></iframe>
+<!--            <iframe id="embedPdf" width="100%" height="100%"></iframe>-->
+            <div id="canvases" style="height: 100%"></div>
+<!--            <div id="embedPdf"></div>-->
             <!-- e : pdf iframe -->
         </div>
         <!-- s : pdf arrow -->
         <div class="pdf-util">
-            <button type="button" class="pdf-arrow is-prev"><span class="offscreen">prev</span></button>
-            <button type="button" class="pdf-arrow is-next"><span class="offscreen">next</span></button>
+            <button type="button" class="pdf-arrow is-prev" style="position: fixed;left: 90px"><span class="offscreen">prev</span></button>
+            <button type="button" class="pdf-arrow is-next" style="position: fixed;right: 90px"><span class="offscreen">next</span></button>
         </div>
         <!-- e : pdf arrow -->
     </div>
