@@ -174,15 +174,15 @@
         document.querySelector(".wrap-list").innerHTML = "";
         const selectedCategory = [...document.querySelector("#divCategory").children[0].children]
             .filter((_item) => _item.className === "is-active")[0]?.id || "";
-        const searchTxt = document.querySelector("#ip-search").value;
+        const searchTxt = document.querySelector("#ip-search").value.toLowerCase();
 
         const filteredList = _result.filter(_item =>
             // (
             //     _item.categoryId === selectedCategory
             //     || selectedCategory === "")
             // &&
-            (_item.title.indexOf(searchTxt) > -1
-                || _item.content.indexOf(searchTxt) > -1));
+            (_item.title.toLowerCase().indexOf(searchTxt) > -1
+                || _item.content.toLowerCase().indexOf(searchTxt) > -1));
 
         if (filteredList.length === 0) {
             document.querySelector(".wrap-list").innerHTML = `<div class="box-list no-data">
