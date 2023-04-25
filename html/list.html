@@ -70,7 +70,7 @@
 
     function f_initEvent() {
         document.querySelector("#ip-search").addEventListener("keydown", function (e) {
-            retreiveList();
+            retreiveList('keydown');
         });
 
         document.querySelector(".is-prev").addEventListener("click", function (e) {
@@ -111,8 +111,8 @@
         fetch("https://fexuclue.s3.ap-northeast-2.amazonaws.com/categorylist.json").then(_val => _val.json()).then(_result => fetchCategory(_result));
     }
 
-    function retreiveList() {
-        fetch("https://fexuclue.s3.ap-northeast-2.amazonaws.com/list.json").then(_val => _val.json()).then(_result => fetchList(_result));
+    function retreiveList(_event) {
+        fetch("https://fexuclue.s3.ap-northeast-2.amazonaws.com/list.json").then(_val => _val.json()).then(_result => fetchList(_result, _event));
     }
 
     let _category = {};
@@ -163,21 +163,20 @@
         return this._list;
     }
 
-    function fetchList(_result) {
+    function fetchList(_result, _event) {
         setFetchList(_result);
-        redrawList(_result);
+        redrawList(_result, _event);
     }
 
-    function redrawList(_result) {
+    function redrawList(_result, _event) {
         document.querySelector(".wrap-list").innerHTML = "";
         const selectedCategory = [...document.querySelector("#divCategory").children[0].children]
             .filter((_item) => _item.className === "is-active")[0]?.id || "";
         const searchTxt = document.querySelector("#ip-search").value.toLowerCase();
 
         const filteredList = _result.filter(_item =>
-            (
-                _item.categoryId === selectedCategory
-                || selectedCategory === "")
+            ((searchTxt.trim().length > 0 && _event === 'keydown') ? true : (_item.categoryId === selectedCategory
+                || selectedCategory === ""))
             &&
             (_item.title.toLowerCase().indexOf(searchTxt) > -1
                 || _item.content.toLowerCase().indexOf(searchTxt) > -1));
