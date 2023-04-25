@@ -177,9 +177,11 @@
         const searchTxt = document.querySelector("#ip-search").value;
 
         const filteredList = _result.filter(_item =>
-            (_item.categoryId === selectedCategory
-                || selectedCategory === "")
-            && (_item.title.indexOf(searchTxt) > -1
+            // (
+            //     _item.categoryId === selectedCategory
+            //     || selectedCategory === "")
+            // &&
+            (_item.title.indexOf(searchTxt) > -1
                 || _item.content.indexOf(searchTxt) > -1));
 
         if (filteredList.length === 0) {
