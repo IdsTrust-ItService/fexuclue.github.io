@@ -63,6 +63,7 @@
             renderTask.promise.then(function () {
                 alert('4');
                 pageRendering = false;
+                alert(pageNumPending);
                 if (pageNumPending !== null) {
                     // New page rendering is pending
                     renderPage(pageNumPending);
