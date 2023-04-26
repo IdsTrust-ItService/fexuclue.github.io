@@ -241,6 +241,7 @@
 
         // document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf;
         // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
+        alert(selectedItem.pdf);
         if (selectedItem.pdf)
             setTimeout(() => {
                 // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
@@ -256,6 +257,7 @@
                         canvasHtml += '<canvas id="canvas_' + i + '"></canvas>';
                     }
 
+                    alert(pages);
                     document.getElementById('canvases').innerHTML = canvasHtml;
 
                     for (var i = 0; i < pages; i++) {
