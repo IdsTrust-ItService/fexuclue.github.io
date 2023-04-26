@@ -28,7 +28,7 @@
         pageNum = 1,
         pageRendering = false,
         pageNumPending = null,
-        scale = 2;
+        scale = 1;
 
     document.addEventListener("DOMContentLoaded", function () {
         f_initEvent();
@@ -49,6 +49,7 @@
 
             canvas.height = viewport.height;
             canvas.width = viewport.width;
+            alert(canvas.width);
 
             // Render PDF page into canvas context
             var renderContext = {
