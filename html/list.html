@@ -43,14 +43,11 @@
         var ctx = canvas.getContext('2d');
         pageRendering = true;
         // Using promise to fetch the page
-        alert('1');
         pdfDoc.getPage(num).then(function (page) {
             var viewport = page.getViewport({scale: scale});
-            alert('2');
+
             canvas.height = viewport.height;
-            alert(canvas.height);
             canvas.width = viewport.width;
-            alert(canvas.width);
 
             // Render PDF page into canvas context
             var renderContext = {
@@ -58,12 +55,10 @@
                 viewport: viewport
             };
             var renderTask = page.render(renderContext);
-            alert(renderTask);
+
             // Wait for rendering to finish
             renderTask.promise.then(function () {
-                alert('4');
                 pageRendering = false;
-                alert(pageNumPending);
                 if (pageNumPending !== null) {
                     // New page rendering is pending
                     renderPage(pageNumPending);
