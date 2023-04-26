@@ -4,8 +4,26 @@
     "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category1/1.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
     "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category1/1.+Unmet+Needs+of+PPI.pdf",
     "categoryId" : "category1",
-    "title" : "test1",
-    "content" : "test2"
+    "title" : "Unmet Needs of PPI",
+    "content" : "Limitations of Proton Pump Inhibitors"
+  },
+
+  {
+    "id": "no_1",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category2/1.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category2/2.+Value+Propositions+of+Fexuprazan.pdf",
+    "categoryId" : "category2",
+    "title" : "Value Propositions of Fexuprazan",
+    "content" : "Six Value Propositons of Fexuprazan"
+  },
+
+  {
+    "id": "no_1",
+    "thumbnail" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category5/1.+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+    "pdf" : "https://fexuclue.s3.ap-northeast-2.amazonaws.com/category5/1.+Phase+3+Clinical+Trial+Outcomes+of+Fexuprazan.pdf",
+    "categoryId" : "category5",
+    "title" : "Phase 3 Clinical Trial Outcomes of Fexuprazan",
+    "content" : "Efficacy and Safety of Fexuprazan in Patients with Erosive Esophagitis"
   }
 
  ,{

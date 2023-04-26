@@ -1,15 +1,18 @@
 [
   {
     "id": "category1",
-    "text" : "Benefit of P-CAB"
+    "text" : "Unmet needs of PPI"
   }, {
     "id": "category2",
     "text" : "Value Proposition of Fexuprazan"
+  }, {
+    "id": "category5",
+    "text" : "Phase 3 clinical trial outcomes of Fexuprazan"
   }, {
     "id": "category3",
     "text" : "Publication & Scientific Congresses"
   }, {
     "id": "category4",
-    "text" : "Global Statuss"
+    "text" : "Global Status"
   }
 ]
