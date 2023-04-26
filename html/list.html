@@ -174,7 +174,7 @@
         redrawList(_event);
     }
 
-    function getFilteredFetchList() {
+    function getFilteredFetchList(_event) {
         const _result = getFetchList();
         const selectedCategory = [...document.querySelector("#divCategory").children[0].children]
             .filter((_item) => _item.className === "is-active")[0]?.id || "";
@@ -187,13 +187,14 @@
             (_item.title.toLowerCase().indexOf(searchTxt) > -1
                 || _item.content.toLowerCase().indexOf(searchTxt) > -1));
 
+        console.log(filteredList);
         return filteredList;
     }
 
     function redrawList(_event) {
         document.querySelector(".wrap-list").innerHTML = "";
 
-        const filteredList = getFilteredFetchList();
+        const filteredList = getFilteredFetchList(_event);
 
         if (filteredList.length === 0) {
             document.querySelector(".wrap-list").innerHTML =
@@ -357,9 +358,9 @@
 
         <!-- s : pdf arrow -->
         <div class="pdf-util">
-            <button type="button" class="pdf-arrow is-prev"><span class="offscreen">prev</span></button>
+            <button type="button" class="pdf-arrow is-prev" style="display: none"><span class="offscreen">prev</span></button>
             <div id="loading" style="display: none;position: fixed;top:50%;left: 45%">Loading...</div>
-            <button type="button" class="pdf-arrow is-next"><span class="offscreen">next</span></button>
+            <button type="button" class="pdf-arrow is-next" style="display: none"><span class="offscreen">next</span></button>
         </div>
         <!-- e : pdf arrow -->
     </div>
