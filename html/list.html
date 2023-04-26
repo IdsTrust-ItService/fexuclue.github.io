@@ -40,6 +40,7 @@
     });
 
     function renderPage(num, canvas) {
+
         var ctx = canvas.getContext('2d');
         pageRendering = true;
         // Using promise to fetch the page
@@ -55,15 +56,16 @@
                 viewport: viewport
             };
             var renderTask = page.render(renderContext);
-
             // Wait for rendering to finish
-            renderTask.promise.then(function () {
+                renderTask.promise.then(function () {
                 pageRendering = false;
                 if (pageNumPending !== null) {
                     // New page rendering is pending
                     renderPage(pageNumPending);
                     pageNumPending = null;
+
                 }
+                document.querySelector("#loading").style.display = "none";
             });
         });
     }
@@ -82,7 +84,6 @@
             redrawPdfContent(--_idx);
         });
         document.querySelector(".is-next").addEventListener("click", function (e) {
-
             let _idx = getSelectedItemIdx();
 
             if (_idx === (getFilteredMaxSize() - 1))
@@ -166,11 +167,11 @@
 
     function fetchList(_result, _event) {
         setFetchList(_result);
-        redrawList(_result, _event);
+        redrawList(_event);
     }
 
-    function redrawList(_result, _event) {
-        document.querySelector(".wrap-list").innerHTML = "";
+    function getFilteredFetchList() {
+        const _result = getFetchList();
         const selectedCategory = [...document.querySelector("#divCategory").children[0].children]
             .filter((_item) => _item.className === "is-active")[0]?.id || "";
         const searchTxt = document.querySelector("#ip-search").value.toLowerCase();
@@ -182,11 +183,20 @@
             (_item.title.toLowerCase().indexOf(searchTxt) > -1
                 || _item.content.toLowerCase().indexOf(searchTxt) > -1));
 
+        return filteredList;
+    }
+
+    function redrawList(_event) {
+        document.querySelector(".wrap-list").innerHTML = "";
+
+        const filteredList = getFilteredFetchList();
+
         if (filteredList.length === 0) {
-            document.querySelector(".wrap-list").innerHTML = `<div class="box-list no-data">
-                <i class="ic ic-file"></i>
-                <p><span>keyword</span>에 대한<br>검색된 정보가 없습니다.</p>
-            </div>`;
+            document.querySelector(".wrap-list").innerHTML =
+                    `<div class="box-list no-data">
+                        <i class="ic ic-file"></i>
+                        <p><span>keyword</span>에 대한<br>검색된 정보가 없습니다.</p>
+                    </div>`;
         }
 
 
@@ -219,7 +229,8 @@
     }
 
     function openDialog(_selectedIdx) {
-        const selectedItem = getFetchList()[_selectedIdx];
+
+        const selectedItem = getFilteredFetchList()[_selectedIdx];
         if (!selectedItem.pdf) {
             alert("PDF자료를 찾을 수 없습니다.");
             return;
@@ -232,20 +243,14 @@
     }
 
     function redrawPdfContent(_selectedIdx) {
+        let $loading = document.querySelector("#loading");
 
-
-        const selectedItem = getFetchList()[_selectedIdx];
+        const selectedItem = getFilteredFetchList()[_selectedIdx];
         setSelectedItemIdx(_selectedIdx);
-        // document.querySelector("#embedPdf").src = "";
-        // console.log(selectedItem.pdf);
 
-        // document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf;
-        // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
-        alert(selectedItem.pdf);
-        if (selectedItem.pdf)
+        if (selectedItem.pdf) {
+            $loading.style.display = "";
             setTimeout(() => {
-                // document.querySelector("#embedPdf").src = "../web/viewer.html?file=../web/1. sunwoo2018.pdf";
-                // document.querySelector("#embedPdf").src = "../web/viewer.html?file="+selectedItem.pdf;
                 const url = selectedItem.pdf;
                 pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
                     pdfDoc = pdfDoc_;
@@ -256,8 +261,6 @@
                     for (var i = 0; i < pages; i++) {
                         canvasHtml += '<canvas id="canvas_' + i + '"></canvas>';
                     }
-
-                    alert(pages);
                     document.getElementById('canvases').innerHTML = canvasHtml;
 
                     for (var i = 0; i < pages; i++) {
@@ -268,8 +271,9 @@
 
                 document.querySelector('.ui-dialog-content').scrollTo(0, 0);
             });
-        else {
+        }else {
             alert("PDF자료를 찾을 수 없습니다.");
+            $loading.style.display="none";
             $('.pop-ex-01').dialog('close');
         }
     }
@@ -346,9 +350,11 @@
             <!--            <div id="embedPdf"></div>-->
             <!-- e : pdf iframe -->
         </div>
+
         <!-- s : pdf arrow -->
         <div class="pdf-util">
             <button type="button" class="pdf-arrow is-prev"><span class="offscreen">prev</span></button>
+            <div id="loading" style="display: none;position: fixed;top:50%;left: 45%">Loading...</div>
             <button type="button" class="pdf-arrow is-next"><span class="offscreen">next</span></button>
         </div>
         <!-- e : pdf arrow -->
