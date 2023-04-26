@@ -28,7 +28,7 @@
         pageNum = 1,
         pageRendering = false,
         pageNumPending = null,
-        scale = 1;
+        scale = 3;
 
     document.addEventListener("DOMContentLoaded", function () {
         f_initEvent();
@@ -40,7 +40,11 @@
     });
 
     function renderPage(num, canvas) {
-
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        console.log(isMobile);
+        if(isMobile) {
+            scale = 1;
+        }
         var ctx = canvas.getContext('2d');
         pageRendering = true;
         // Using promise to fetch the page
@@ -49,7 +53,6 @@
 
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            alert(canvas.width);
 
             // Render PDF page into canvas context
             var renderContext = {
