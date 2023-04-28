@@ -44,6 +44,8 @@
         if(isMobile) {
             scale = 1;
         }
+
+
         var ctx = canvas.getContext('2d');
         pageRendering = true;
         // Using promise to fetch the page
@@ -305,8 +307,10 @@
 
     function redrawPdfContent(_selectedIdx, orientation) {
         let $loading = document.querySelector("#loading");
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         const selectedItem = getFilteredFetchList()[_selectedIdx];
+        const screenOrientation = screen.orientation.type;
         setSelectedItemIdx(_selectedIdx);
 
         if (selectedItem.pdf) {
@@ -327,12 +331,17 @@
                     for (var i = 0; i < pages; i++) {
                         var canvas = document.getElementById('canvas_' + i);
 
-                        // 세로면 가로넓이를
-                        if(orientation === "portrait") {
+
+                        if(screenOrientation.indexOf("portrait") > -1) {
                             canvas.style.width = "80%";
                         } else {
-                            canvas.style.height = "100%";
+                            if(orientation === "portrait") {
+                                canvas.style.width = "80%";
+                            } else {
+                                canvas.style.height = "100%";
+                            }
                         }
+
 
                         canvas.addEventListener('touchstart', handleTouchStart, false);
                         canvas.addEventListener('touchmove', handleTouchMove, false);
