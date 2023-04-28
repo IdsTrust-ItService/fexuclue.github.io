@@ -18,6 +18,8 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.min.js"></script>
+
+
 </head>
 <body>
 
@@ -185,6 +187,7 @@
             (_item.title.toLowerCase().indexOf(searchTxt) > -1
                 || _item.content.toLowerCase().indexOf(searchTxt) > -1));
 
+        console.log("dd");
         console.log(filteredList);
         return filteredList;
     }
@@ -239,7 +242,7 @@
             return;
         }
 
-        redrawPdfContent(_selectedIdx);
+        redrawPdfContent(_selectedIdx, selectedItem.orientation);
 
         $('.pop-ex-01').dialog('open');
 
@@ -300,7 +303,7 @@
         return { x, y };
     }
 
-    function redrawPdfContent(_selectedIdx) {
+    function redrawPdfContent(_selectedIdx, orientation) {
         let $loading = document.querySelector("#loading");
 
         const selectedItem = getFilteredFetchList()[_selectedIdx];
@@ -323,6 +326,13 @@
 
                     for (var i = 0; i < pages; i++) {
                         var canvas = document.getElementById('canvas_' + i);
+
+                        // 세로면 가로넓이를
+                        if(orientation === "portrait") {
+                            canvas.style.width = "80%";
+                        } else {
+                            canvas.style.height = "100%";
+                        }
 
                         canvas.addEventListener('touchstart', handleTouchStart, false);
                         canvas.addEventListener('touchmove', handleTouchMove, false);
@@ -429,8 +439,8 @@
     <script>
         $(function () {
             if ($('[data-role=dialog]').length > 0) {
+                var screenHeight = window.innerHeight;
                 $.extend($.ui.dialog.prototype.options, {
-                    height: "auto",
                     modal: true,
                     autoOpen: false,
                     closeText: "팝업 닫기",
@@ -438,7 +448,7 @@
                     draggable: false,
                     create: function (event, ui) {
                         $(event.target).dialog("option", {
-                            "width": $(event.target).data("width")
+                            "width": "100%",
                         });
                         resizePopupPos();
                     },
@@ -467,9 +477,6 @@
                             $('body').removeClass('ovh');
                             $(window).scrollTop(parseInt(scrollTopPos) * -1);
                         }
-
-
-
                     }
                 });
             }
