@@ -1,25 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>simpleMap</title>
-    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=ZZcxvuTEPg3ONafLLiwh22rXg1x1cmQjtzctWtk0"></script>
-    <script type="text/javascript">
-        function initTmap() {
-            var map = new Tmapv2.Map("map_div",
-                {
-                    center: new Tmapv2.LatLng(37.566481622437934, 126.98502302169841), // 지도 초기 좌표
-                    width: "890px",
-                    height: "400px",
-                    zoom: 15
-                });
-        }
-    </script>
-</head>
-<body onload="initTmap()">
+
 <div id="map_div">
 </div>
-<a href="javascript:tMap('대구광역시 남구 두류공원로17길 33 대구가톨릭대학교병원 내 장례식장 (대명동)','','');">티맵 경로 안내2</a>
+<a href="javascript:tMap('(복)대구가톨릭사회복지회가톨릭장례식장','','');">티맵 경로 안내</a>
 <script>
     function tMap(name,lat,lng){
         location.href = "https://apis.openapi.sk.com/tmap/app/routes?appKey=ZZcxvuTEPg3ONafLLiwh22rXg1x1cmQjtzctWtk0&name="+name+"&lon="+lng+"&lat="+lat;
