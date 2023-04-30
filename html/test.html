@@ -19,27 +19,12 @@
 <body onload="initTmap()">
 <div id="map_div">
 </div>
-<button id="tmapButton">Tmap 켜기2</button>
+<a href="javascript:tMap('신월4동주민센터','37.5246971','126.8400793');">티맵 경로 안내</a>
 <script>
-    var map = null;
-    var tmapButton = document.getElementById("tmapButton");
-    tmapButton.onclick = function() {
-        if(map == null) {
-            map = new Tmapv2.Map({
-                div:'map_div',
-                width:'100%',
-                height:'500px',
-                zoom:15
-            });
-        }
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var lon = position.coords.longitude;
-                var lat = position.coords.latitude;
-                map.setCenter(new Tmapv2.LatLng(lon, lat));
-            });
-        }
-    };
+    function tMap(name,lat,lng){
+        location.href = "https://apis.openapi.sk.com/tmap/app/routes?appKey=ZZcxvuTEPg3ONafLLiwh22rXg1x1cmQjtzctWtk0&name="+name+"&lon="+lng+"&lat="+lat;
+    }
+
 </script>
 </body>
 </html>
