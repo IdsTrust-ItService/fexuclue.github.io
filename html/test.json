@@ -1,0 +1,62 @@
+birth_date:"2023-05-03"
+,birth_hour: "00:00"
+,birth_yn: "N"
+,blt_datas:[{blt_contents: "<p>555</p>"
+,blt_index: 0
+,blt_title: "고인의삶"
+,display_yn: "Y"
+,memorial_id: "M00000003151"}]
+,calculate_request_yn: "N"
+,chief_funeral_nm: ""
+,chief_funeral_yn: "N"
+,chief_mourner: "11355"
+,chief_mourner_desc: "배우자"
+,chief_mourner_phone: "01012341234"
+,chudosa:"66666"
+,condolatory_datas:[{account_number: "555"
+,applicant_name: "77"
+,bank_name: "대구은행"
+,condolatory_money_seq: 0
+,memorial_id: "M00000003151"
+,message_template:{
+,contents: "마음 전하실 곳 \n\n77 대구은행 555\n"
+,createdtime: 1642994606000
+,display_yn: "Y"
+,message_template_id:6
+,message_type: "A"
+,modifydtime: 1643004492000
+,title: "[조의금 계좌안내]"}
+,qr_yn: "N"
+,toss_yn: "N"}]
+,condolatory_yn: "Y"
+,create_member_id: "U00000005035"
+,createdtime: 1682817065000
+,deceased_birthday: "1941-03-11"
+,deceased_date: "2023-04-30"
+,deceased_hour: "00:00"
+,deceased_introduction:"777"
+,deceased_job_title: "44"
+,deceased_name: "33"
+,deceased_photo: ""
+,deceased_video_link: ""
+,deceased_video_yn: "N"
+,delivery_yn: "Y"
+,digital_wreath_yn: "Y"
+,display_yn: "Y"
+,donation_yn: "N"
+,funeral_addr:""
+,funeral_addr_view: ""
+,funeral_addr_yn: "N"
+,funeral_hall: ""
+,funeral_place: ""
+,funeral_room: ""
+,funeral_yn: "N"
+,medias:[]
+,memorial_id: "M00000003151"
+,modifydtime: 1682821231000
+,multy_yn: "N"
+,own_member_id: "U00000005035"
+,own_member_nm: "차병환"
+,relations_datas:[]
+,status: "1"
+,symbol_comment_yn: "N"
