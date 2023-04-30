@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<div id="map_div">
+</div>
+<a href="javascript:sendNaverLine();">라인공유하기</a>
+<script>
+    function sendNaverLine(){
+        const sns_title = "title";
+        const sns_summary = "블로그";
+        const sns_br = "\n";
+        const sns_link = "링크";
+        const sns_img = "";
+        var url = "http://line.me/R/msg/text/?"+encodeURIComponent(sns_title+sns_br+sns_summary+sns_br+sns_link);
+        location.href = url;
+        // location.href = "https://apis.openapi.sk.com/tmap/app/routes?appKey=ZZcxvuTEPg3ONafLLiwh22rXg1x1cmQjtzctWtk0&name="+name+"&lon="+lng+"&lat="+lat;
+    }
+
+</script>
+</body>
+</html>
