@@ -315,6 +315,8 @@
         if (selectedItem.pdf) {
             $loading.style.display = "";
             setTimeout(() => {
+                console.log(screenOrientation)
+
                 const url = selectedItem.pdf;
                 pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
                     pdfDoc = pdfDoc_;
