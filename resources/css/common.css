@@ -343,7 +343,7 @@ footer .address ul li:after {
 }
 .ui-dialog .ui-dialog-content .popup-content {
   height: 100%;
-  padding: 3.125rem 0;
+  padding: 1.125rem 0;
   font-size: 14px;
   line-height: 1.35;
 }

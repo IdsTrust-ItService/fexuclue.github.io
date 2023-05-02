@@ -45,15 +45,15 @@
             scale = 1;
         }
 
-
         var ctx = canvas.getContext('2d');
         pageRendering = true;
         // Using promise to fetch the page
         pdfDoc.getPage(num).then(function (page) {
-            var viewport = page.getViewport({scale: scale});
 
-            canvas.height = viewport.height;
+            var viewport = page.getViewport({scale: scale});
+            // console.log(viewport.parent);
             canvas.width = viewport.width;
+            canvas.height = viewport.height;
 
             // Render PDF page into canvas context
             var renderContext = {
@@ -70,6 +70,14 @@
                     pageNumPending = null;
 
                 }
+                // const w = document.querySelector(".popup-content").clientWidth;
+                // const h = document.querySelector(".popup-content").clientHeight;
+                //
+                // console.log(document.querySelector(".popup-content").clientHeight);
+                // console.log(document.querySelector(".popup-content").clientWidth);
+                // document.querySelector("canvas").width = w;
+                // document.querySelector("canvas").height = h;
+
                 document.querySelector("#loading").style.display = "none";
             });
         });
@@ -244,9 +252,13 @@
             return;
         }
 
-        redrawPdfContent(_selectedIdx, selectedItem.orientation);
+
 
         $('.pop-ex-01').dialog('open');
+
+        setTimeout(()=>{
+            redrawPdfContent(_selectedIdx, selectedItem.orientation);
+        },0)
 
     }
 
@@ -308,6 +320,7 @@
     function redrawPdfContent(_selectedIdx, orientation) {
         let $loading = document.querySelector("#loading");
 
+
         const selectedItem = getFilteredFetchList()[_selectedIdx];
         const screenOrientation = screen.orientation.type;
         setSelectedItemIdx(_selectedIdx);
@@ -315,7 +328,6 @@
         if (selectedItem.pdf) {
             $loading.style.display = "";
             setTimeout(() => {
-                console.log(screenOrientation)
 
                 const url = selectedItem.pdf;
                 pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
@@ -332,15 +344,22 @@
                     for (var i = 0; i < pages; i++) {
                         var canvas = document.getElementById('canvas_' + i);
 
-                        if(screenOrientation.indexOf("portrait") > -1) {
-                            canvas.style.width = "80%";
-                        } else {
-                            if(orientation === "portrait") {
-                                canvas.style.width = "80%";
-                            } else {
-                                canvas.style.height = "100%";
-                            }
-                        }
+                        canvas.style.width = (80)+"%";
+                        // if(orientation === "portrait") {
+                        //     canvas.style.width = (80)+"%";
+                        // } else {
+                        //     canvas.style.height = (100)+"%";
+                        // }
+
+                        // if(screenOrientation.indexOf("portrait") > -1) {
+                        //     canvas.style.width = (80)+"%";
+                        // } else {
+                        //     if(orientation === "portrait") {
+                        //         canvas.style.width = (80)+"%";
+                        //     } else {
+                        //         canvas.style.height = (100)+"%";
+                        //     }
+                        // }
 
                         canvas.addEventListener('touchstart', handleTouchStart, false);
                         canvas.addEventListener('touchmove', handleTouchMove, false);
