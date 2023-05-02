@@ -143,7 +143,7 @@
 
         _result.map((_item, index) => {
             $ul.innerHTML +=
-                `<li onclick="eventClickCategory('${_item.id}')"  id='${_item.id}' ><a href="#" >${_item.text}</a></li>`;
+                `<li onclick="eventClickCategory('${_item.id}')"  id='${_item.id}' ><button type="button">${_item.text}</button></li>`;
         });
 
         $divCategory.appendChild($ul);
@@ -201,7 +201,7 @@
 
         if (filteredList.length === 0) {
             document.querySelector(".wrap-list").innerHTML =
-                    `<div class="box-list no-data">
+                `<div class="box-list no-data">
                         <i class="ic ic-file"></i>
                         <p><span>keyword</span>에 대한<br>검색된 정보가 없습니다.</p>
                     </div>`;
@@ -307,7 +307,6 @@
 
     function redrawPdfContent(_selectedIdx, orientation) {
         let $loading = document.querySelector("#loading");
-        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         const selectedItem = getFilteredFetchList()[_selectedIdx];
         const screenOrientation = screen.orientation.type;
@@ -331,7 +330,6 @@
                     for (var i = 0; i < pages; i++) {
                         var canvas = document.getElementById('canvas_' + i);
 
-
                         if(screenOrientation.indexOf("portrait") > -1) {
                             canvas.style.width = "80%";
                         } else {
@@ -341,7 +339,6 @@
                                 canvas.style.height = "100%";
                             }
                         }
-
 
                         canvas.addEventListener('touchstart', handleTouchStart, false);
                         canvas.addEventListener('touchmove', handleTouchMove, false);
@@ -393,9 +390,8 @@
                     <button type="button" class="btn-nav-open"><span class="offscreen">open</span></button>
                     <!-- e : gnb open/close 버튼 (only table&mobile) -->
                 </nav>
-
-                <p class="copyright">Copyright 2023 DAEWOONG PHARMACEUTICAL CO.,LTD.<br>All rights reserverd.</p>
             </div>
+            <p class="copyright">Copyright 2023 DAEWOONG PHARMACEUTICAL CO.,LTD.<br>All rights reserverd.</p>
         </header>
 
         <section>
@@ -424,13 +420,13 @@
     </footer>
 
     <!--S: pop-ex-01 -->
-    <div class="pop-ex-01" data-role="dialog" title="Create new user">
+    <div class="pop-ex-01" data-role="dialog" title="Fexclue">
         <div class="offscreen js-title">DAEWOONG</div>
         <div class="popup-content">
             <!-- s : pdf iframe-->
             <!-- desc :: 적용후 스타일 확인 필요한 부분이니 이상하면 피드백주세요!! -->
             <!--            <iframe id="embedPdf" width="100%" height="100%"></iframe>-->
-            <div id="canvases"></div>
+            <div id="canvases" style="text-align: center"></div>
             <!--            <div id="embedPdf"></div>-->
             <!-- e : pdf iframe -->
         </div>

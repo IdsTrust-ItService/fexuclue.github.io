@@ -3,8 +3,11 @@ html,
 body{
 	width:100%;
 	height:100%;
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
+
+	@include media-breakpoint-down(md){
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
 }
 .ovh{
 	position: fixed;
@@ -127,9 +130,11 @@ footer{
 		padding:rem(50px) rem(85px) ;
 		background-color: $colorWhite;
 		width:calc(100% - rem(120px));
-		height:calc(100% - rem(120px)) !important;
+		//height:calc(100% - rem(120px)) !important;
 		//max-width:600px;
 		font-family:$fontKor;
+		top:0 !important;
+		bottom:0 !important;
 
 		@include media-breakpoint-down(md){
 			position:fixed;
@@ -185,12 +190,35 @@ footer{
 				width:tbcal(rem(201px));
 				height:tbcal(rem(35px));
 			}
+
+			&:after{
+				content:"The New Wave of GERD Treatment, Fexuprazan";
+				position:absolute;
+				top:50%;
+				right:rem(16px);
+				height:rem(22px);
+				font-size:20px;
+				font-weight:500;
+				transform:translateY(-50%);
+
+				@include media-breakpoint-down(md){
+					font-size:tbcal(rem(32px));
+					height:tbcal(rem(35px));
+					right:tbcal(rem(85px));
+				}
+				@include media-breakpoint-down(xs){
+					content:"Fexuprazan";
+					font-size:mocal(rem(32px));
+					height:tbcal(rem(35px));
+					right:mocal(rem(85px));
+				}
+			}
 		}
 	}
 	.ui-dialog-titlebar-close {
 		display:block;
 		position:absolute;
-		right:-5px;
+		right:-35px;
 		top:-5px;
 		padding: 5px;
 		width: 32px;
