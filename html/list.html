@@ -322,8 +322,9 @@
 
 
         const selectedItem = getFilteredFetchList()[_selectedIdx];
-        const screenOrientation = screen.orientation.type;
+        // const screenOrientation = screen.orientation.type;
         setSelectedItemIdx(_selectedIdx);
+        console.log("change");
 
         if (selectedItem.pdf) {
             $loading.style.display = "";
