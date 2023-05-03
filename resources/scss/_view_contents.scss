@@ -462,12 +462,16 @@
 				}
 			}
 			.copyright{
-				font-size:rem(11px);
+				font-size:rem(10px);
 				line-height:rem(16px);
 				color:#fff;
 				position:fixed;
-				bottom:rem(30px);
+				bottom:rem(15px);
 				left:rem(30px);
+
+				@include media-breakpoint-down(lg){
+					left:rem(20px);
+				}
 
 				@include media-breakpoint-down(md){
 					display:none;

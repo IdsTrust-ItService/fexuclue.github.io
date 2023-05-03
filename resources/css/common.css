@@ -343,7 +343,7 @@ footer .address ul li:after {
 }
 .ui-dialog .ui-dialog-content .popup-content {
   height: 100%;
-  padding: 1.125rem 0;
+  padding: 3.125rem 0;
   font-size: 14px;
   line-height: 1.35;
 }
@@ -952,12 +952,17 @@ footer .address ul li:after {
   }
 }
 .wrap main header .copyright {
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   line-height: 1rem;
   color: #fff;
   position: fixed;
-  bottom: 1.875rem;
+  bottom: 0.9375rem;
   left: 1.875rem;
+}
+@media (max-width: 1279.98px) {
+  .wrap main header .copyright {
+    left: 1.25rem;
+  }
 }
 @media (max-width: 1023.98px) {
   .wrap main header .copyright {
