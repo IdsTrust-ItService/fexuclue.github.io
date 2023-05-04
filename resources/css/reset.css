@@ -137,4 +137,3 @@ select[readonly]:-internal-autofill-selected,
 select[readonly]:-webkit-autofill,
 select[readonly]:-webkit-autofill:hover,
 select[readonly]:-webkit-autofill:focus {-webkit-box-shadow: 0 0 0 1000px #f8f8f8 inset !important;}
-
