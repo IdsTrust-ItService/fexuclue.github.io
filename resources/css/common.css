@@ -267,7 +267,7 @@ footer .address ul li:after {
   }
 }
 .ui-dialog[role=dialog] .ui-dialog-title:after {
-  content: "The New Wave of GERD Treatment, Fexuprazan";
+  content: "HealthCare Professionals Only";
   position: absolute;
   top: 50%;
   right: 1rem;
